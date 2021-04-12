@@ -1,64 +1,61 @@
-class NAIF{
-
-
-    Overlap(seq) {
-        lg = seq.length;
-        overlap = [lg+1];
-        overlap[0] = -1;
-        for( i = 0 ; i < lg ; i++ ) {
-            overlap[i+1] = overlap[i]+1 ;
-            while(overlap[i+1] > 0 &&
-                seq[i] != seq[overlap[i+1]-1]) {
-                overlap[i+1] = overlap[overlap[i+1]-1]+1;
-            }
+function getOverlap(seq) {
+    let lg = seq.length;
+    let overlap = [];
+    overlap[0] = -1;
+    for (let i = 0; i < lg; ++i) {
+        overlap[i + 1] = overlap[i] + 1;
+        while (overlap[i + 1] > 0 &&
+               seq[i] != seq[overlap[i + 1] - 1]) {
+            overlap[i + 1] = overlap[overlap[i + 1] - 1] + 1;
         }
-            return overlap;
     }
+    return overlap;
+}
 
+function extract(seq, k) {
+    let i, j, l, lg = seq.length;
+    let result = false;
 
-    extract(seq, k) {
-
-        let i,j,l,lg = seq.length;
-        let result = false;
-        for(i=0; i<lg-k; i++){
-            motif = seq.substring(i,i+k);
-            overlap = Overlap(motif);
-            msg = "";
-            j = i + 1;
-            while( j < lg - k){
-                ok = true;
-                for(l = 0; ok && (1 < k); l++){
-                    ok = (seq[j+l] == motif[1]);
+    for (i = 0; i < lg - k; ++i) {
+        let motif = seq.substring(i, i + k);
+        let overlap = getOverlap(motif);
+        // console.log(`overlap du motif '${motif}' = ${overlap}`);
+        let msg = "";
+        j = i + 1;
+        while (j <= lg - k) {
+            let ok = true;
+            for (l = 0; ok && (l < k); ++l) {
+                ok = (seq[j + l] == motif[l]);
+            }
+            if (ok) {
+                if (msg.length == 0) {
+                    msg = "le motif '" + motif + "' apparait aux position " + i;
                 }
-                if(ok){
-                    if(!msg){
-                        msg = "le motif '"+motif+"' apparait aux position "+i;
-                    }
-                    msg += ", "+j;
-                    l--;
-                }
-                j+=l-overlap[l+1]+1;
+                msg += ", " + j;
+                --l;
             }
-            if(msg){
-                print(msg);
-                result = true;
-            }
+            j += l - overlap[l + 1] + 1;
         }
-
-        return result;
-    }
-    
-
-
-
-
-    PlusLongMotifRepet(seq) {
-
-        for(let k = seq.length-1; k>0; k--) {
-            if (extract(eq,k)) {
-                return k;
-            }
+        if (msg.length > 0) {
+            console.log(msg);
+            result = true;
         }
-        return 0;
     }
+
+    return result;
+}
+
+function longestRepeatedPattern(seq) {
+    const start = performance.now();
+    let LRP = 0;
+    for (let k = seq.length - 1; k > 0; --k) {
+        if (extract(seq, k)) {
+            LRP = k;
+            break;
+        }
+    }
+    const end = performance.now();
+    console.log((end-start)+ " ms d'execution javascript");
+
+    return LRP;
 }

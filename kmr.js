@@ -1,92 +1,72 @@
 class KMR {
     constructor(sequence) {
         this.sequence = sequence;
-        this.a = [];
-        this.b = [];
+        this.a = 1;
+        this.b = 1;
         this.n = sequence.length;
-        this.e = [];
+        this.e = 0;
         this.v_a = [];
-        this.lastIndexWithPattern = 0;
 
         this.init();
-        let iter = -1;
-        if (this.e[0]) {
+        if (this.e) {
+            let i = 0;
             do {
-                ++iter;
-                this.b[iter] = this.a[iter];
-            } while (this.next_iter(iter));
-            while (this.b[this.b.length - 1] > 1) {
-                ++iter;
-                this.b[iter] = this.b[iter-1] >> 1;
-                this.next_iter(iter);
+                this.b = this.a;
+            } while (this.next_iter());
+            while (this.b > 1) {
+                this.b >>= 1;
+                this.next_iter();
             }
         } else {
-            this.a.fill(0);
-            this.b.fill(0);
+            this.a = this.b = 0;
         }
-        console.log(`a = ${this.a}, b = ${this.b}, e = ${this.e}`);
-        console.log("v_a = ");
-        for (let i = 0; i < this.v_a.length; ++i) {
-            console.log(` v_a[${i}] = ${this.v_a[i]}`);
-        }
-
     }
 
     init() {
         var alphabet = new Map();
         this.n = this.sequence.length;
-        this.a[0] = this.b[0] = 1;
-        this.v_a[0] = [];
+        this.a = this.b = 1;
 
         for (let i = 0; i < this.n; ++i) {
             if (!alphabet.has(this.sequence[i])) {
-                this.v_a[0][i] = alphabet.size;
+                this.v_a[i] = alphabet.size;
                 alphabet.set(this.sequence[i], alphabet.size);
             } else {
-                this.v_a[0][i] = alphabet.get(this.sequence[i]);
+                this.v_a[i] = alphabet.get(this.sequence[i]);
             }
         }
-        this.e[0] = (alphabet.size < this.n ? alphabet.size : 0);
+        this.e = (alphabet.size < this.n ? alphabet.size : 0);
     }
 
-    next_iter(iter) {
+    next_iter() {
         var P = [];
         var Q = [];
         var has_motif = false;
-        if (iter > 0) {
-            this.v_a[iter] = [...this.v_a[this.lastIndexWithPattern]];
-            this.e[iter] = this.e[this.lastIndexWithPattern];
-        }
 
-        console.log(`Nouvelle iteration avec a = ${this.a[iter]}, b = `,
-                    this.b[iter], ` et e = ${this.e[iter]}`);
-        // console.log("deb v_a = ");
-        // for (let i = 0; i < this.v_a.length; ++i) {
-        //     console.log(` v_a[${i}] = ${this.v_a[i]}`);
-        // }
-
-        for (let i = 0; i < this.e[iter]; ++i) {
-            P[i] = [];
-            Q[i] = [];
-        }
+        console.log(`Nouvelle iteration avec a = ${this.a}, b = ${this.b} et`,
+                    `e = ${this.e}`);
 
         for (let p = 0; p < this.n; ++p) {
-            if (this.v_a[iter][p] != -1) {
-                let i = this.v_a[iter][p];
+            if (this.v_a[p] != -1) {
+                let i = this.v_a[p];
+                if (!(P[i] instanceof Array)) {
+                    P[i] = [];
+                }
                 P[i].push(p);
             }
         }
 
-        for (let i = 0; i < this.e[iter]; ++i) {
+        for (let i = 0; i < this.e; ++i) {
             while (P[i].length > 0) {
                 let p = P[i].pop();
-                if ((p + this.b[iter] < this.n) &&
-                    (this.v_a[iter][p + this.b[iter]] != -1)
-                ) {
-                    Q[this.v_a[iter][p + this.b[iter]]].push(p);
+                if ((p + this.b < this.n) && (this.v_a[p + this.b] != -1)) {
+                    if (!(Q[this.v_a[p + this.b]] instanceof Array)) {
+                        Q[this.v_a[p + this.b]] = [];
+                    }
+                    Q[this.v_a[p + this.b]].push(p);
                 }
             }
-            for (let j = 0; j < this.e[iter]; ++j) {
+            for (let j = 0; j < this.e; ++j) {
                 if ((Q[j] instanceof Array) && Q[j].length > 0) {
                     let x = Q[j][Q[j].length - 1];
                     if (x != -1) {
@@ -105,36 +85,29 @@ class KMR {
         }
 
         if (has_motif) {
-            this.v_a[iter].fill(-1);
-    
+            this.v_a.fill(-1);
             let e_tmp = -1;
-            for (let i = 0; i < this.e[iter]; ++i) {
+            for (let i = 0; i < this.e; ++i) {
                 while ((Q[i] instanceof Array) && Q[i].length > 0) {
                     let x = Q[i].pop();
                     if (x == -1) {
                         ++e_tmp;
                     } else {
-                        this.v_a[iter][x] = e_tmp;
+                        this.v_a[x] = e_tmp;
                     }
                 }
             }
-            this.e[iter] = ++e_tmp;
-            this.a[iter+1] = this.a[iter] + this.b[iter];
-            this.n -= this.b[iter];
-            this.lastIndexWithPattern = iter;
-        } else {
-            this.a[iter+1] = this.a[iter];
-            this.v_a[iter].fill(-1);
-            this.e[iter] = 0;
+            this.e = ++e_tmp;
+            this.a += this.b;
+            this.n -= this.b;
         }
-
         return has_motif
     }
 
-    getRepeatedMotifPositions(index, motif) {
+    getRepeatedMotifPositions(motif) {
         var positions = [];
-        for (let p = 0; p < this.sequence.length; ++p) {
-            if (this.v_a[index][p] == motif) {
+        for (let p = 0; p < this.n; ++p) {
+            if (this.v_a[p] == motif) {
                 positions.push(p);
             }
         }
@@ -142,48 +115,37 @@ class KMR {
     }
 
     print() {
-        if (this.e.length == 0) {
+        if (!this.e) {
             console.log(`Il n'y a pas de motif répété dans la séquence\
                         ${this.sequence}.`);
         } else {
-            console.log(`La taille maximale de motif répété est ${this.a[this.a.length - 1]}.`);
-            for (let iter = 0; iter < this.v_a.length; ++iter) {
-                if (this.e[iter] == 0) {
-                    continue;
-                }
-                console.log(`Il y a ${this.e[iter]} motifs répété(s) de taille`,
-                    this.a[iter] + this.b[iter], '.');
-                for (let m = 0; m < this.e[iter]; ++m) {
-                    let pos = this.getRepeatedMotifPositions(iter, m);
-                    console.log(`Le motif ${m+1} correspondant à '`,
-                    this.sequence.substring(pos[0], pos[0] + this.a[iter] + this.b[iter]),
+            console.log(`La taille maximale de motif répété est ${this.a}.`);
+            console.log(`Il y a ${this.e} motifs répété(s).`);
+            for (let m = 0; m < this.e; ++m) {
+                let pos = this.getRepeatedMotifPositions(m);
+                console.log(`Le motif ${m+1} correspondant à '`,
+                    this.sequence.substring(pos[0], pos[0] + this.a),
                     "' apparaît aux positions : ",pos);
-                }
             }
         }
     }
 
     toHTML() {
         let html = "<p>";
-        if (this.e.length == 0) {
+        if (!this.e) {
             html += `Il n'y a pas de motif répété dans la séquence ` + this.sequence;
         } else {
-            html += `La taille maximale de motif répété est ${this.a[this.a.length - 1]}. <br>`;
-            for (let iter = 0; iter < this.v_a.length; ++iter) {
-                if (this.e[iter] == 0) {
-                    continue;
-                }
-                html += `Il y a ${this.e[iter]} motifs répété(s) de taille ` +
-                    (this.a[iter] + this.b[iter]) + ". <br>";
-                for (let m = 0; m < this.e[iter]; ++m) {
-                    let pos = this.getRepeatedMotifPositions(iter, m);
-                    html += `Le motif ${m+1} correspondant à '` +
-                        this.sequence.substring(pos[0], pos[0] + this.a[iter] + this.b[iter]) +
-                        "' apparaît aux positions : " + pos + "<br>";
-                }
+            html += `La taille maximale de motif répété est ${this.a}. <br>`;
+            html += `Il y a ${this.e} motifs répété(s).<br>`;
+            for (let m = 0; m < this.e; ++m) {
+                let pos = this.getRepeatedMotifPositions(m);
+                html += `Le motif ${m+1} correspondant à '` +
+                    this.sequence.substring(pos[0], pos[0] + this.a) +
+                    "' apparaît aux positions : " + pos + "<br>";
             }
         }
         html += "</p>";
         return html;
     }
-}
+
+} 
