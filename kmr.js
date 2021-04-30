@@ -22,6 +22,10 @@ class KMR {
         }
     }
 
+    static compute(sequence) {
+        return new KMR(sequence);
+    }
+
     init() {
         var alphabet = new Map();
         this.n = this.sequence.length;

@@ -16,7 +16,7 @@ function extract(seq, k) {
     let i, j, l, lg = seq.length;
     let result = false;
 
-    for (i = 0; i < lg - k; ++i) {
+    for (i = 0; i <= lg - k; ++i) {
         let motif = seq.substring(i, i + k);
         let overlap = getOverlap(motif);
         // console.log(`overlap du motif '${motif}' = ${overlap}`);

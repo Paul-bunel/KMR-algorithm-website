@@ -3,19 +3,30 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Algorithme KMR</title>
-    <!-- <link href="images/favicon.ico" rel="icon"> -->
+    <title>Algorithme KMR logo</title>
+    <link href="favicon.ico" rel="icon">
 
     <link href="style.css" rel="stylesheet">
 
+    <script src="perf.js" defer></script>
+    <!-- <script src="perfTestjs" defer></script> -->
     <script src="kmr.js" defer></script>
-    <script src="naif.js" defer></script>
-    <script src="executeKMR.js" defer></script>
+    <script src="naive.js" defer></script>
+    <!-- <script src="executeKMR.js" defer></script> -->
 </head>
 <body>
-    <input type="text" id="sequence" placeholder="Entrez votre chaine de caractères ici">
-    <button id="validation-button">Chercher des motifs</button>
-    <p id="print-sequence"></p>
-    <div id="algo-results"></div>
+    <button id="perf-button">Calculer les performances</button>
+    <div id="algo-results">
+        <p id="progression">
+            Temps écoulé : 0ms. Pourcentage du calcul effectué : 0%.<br>
+        </p>
+        <table id="table-results">
+            <tr>
+                <th>Length</th>
+                <th>KMR Time</th>
+                <th>Naive Time</th>
+            </tr>
+        </table>
+    </div>
 </body>
 </html>
