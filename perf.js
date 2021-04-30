@@ -64,13 +64,20 @@ function recursiveAlgorithmCompute(algo, seqMap, perfMap, i, iMax) {
 }
 
 function makeResultsTable(seqMap) {
+
+    tabResForChartKMR = [];
+    tabResForChartNaif = [];
+
     totalEnd = performance.now();
     console.log(`total time : ${totalEnd - totalStart}`);
     const tabResults = document.querySelector('#table-results');
     for (const length of seqMap.keys()) {
         tabResults.innerHTML += `<tr><td>${length}</td><td>${perfMapKMR.get(length)}</td>`
         + `<td>${perfMapNaive.get(length)}</td></tr>`;
+        tabResForChartKMR.push(perfMapKMR.get(length));
+        tabResForChartNaif.push(perfMapNaive.get(length));
     }
+    console.log(tabResForChartKMR);
 }
 
 function getPerformances(seqMap) {
