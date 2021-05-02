@@ -78,7 +78,12 @@ const plugin = {
   }
 };
 
-
+const datastorage = [[0.33100000000558794,0.913999998010695	,1.2670000025536865,
+  1.7859999847132713,1.8820000055711716,0.5559999961405993,0.6310000026132911,
+  0.7310000015422702,0.7810000039171427,0.8789999992586672],
+  [7.96900000423193,44.489000004250556,126.10700000077486,272.877999994671,
+  527.3610000091139,926.1829999973997,1463.7889999954496,2222.7849999966566,
+  3144.293999992078,4356.391000002623]];
 
 function ChangeData(chart, newData) {
   //chart.data.labels.push(label);
@@ -91,29 +96,36 @@ function ChangeData(chart, newData) {
 }
 
 function removeData(chart) {
-  chart.data.labels.pop();
-  chart.data.datasets.forEach((dataset) => {
-      dataset.data.pop();
-  });
-  chart.update();
+
+  if(chart.data.datasets[0].data.length > 2)
+  {
+    chart.data.labels.pop();
+    
+    chart.data.datasets.forEach((dataset) => {
+        dataset.data.pop();
+    });
+    chart.update();
+  }
 }
 
-const datastorage = [[0.33100000000558794,0.913999998010695	,1.2670000025536865,
-  1.7859999847132713,1.8820000055711716,0.5559999961405993,0.6310000026132911,
-  0.7310000015422702,0.7810000039171427,0.8789999992586672],
-  [7.96900000423193,44.489000004250556,126.10700000077486,272.877999994671,
-  527.3610000091139,926.1829999973997,1463.7889999954496,2222.7849999966566,
-  3144.293999992078,4356.391000002623]];
-//A modifier pour évité de pouvoir rajouter de la data qqui nexiste pas 
+
 function restoreData(chart){
-  
-  i = 0;
-  chart.data.datasets.forEach((dataset)=>{
-    console.log(chart.data.datasets[0].data.length);
-    dataset.data.push(datastorage[i][chart.data.datasets[0].data.length]);
-    i++;
-  })
-  chart.update();
+
+  label = chart.data.labels;
+
+  if(chart.data.datasets[0].data.length < datastorage[0].length && chart.data.datasets[0].data.length > 0)
+  {
+
+    label.push(parseInt(label[label.length - 1],10) + 100);
+
+    i = 0;
+    chart.data.datasets.forEach((dataset)=>{
+      dataset.data.push(datastorage[i][chart.data.datasets[i].data.length]);
+      i++;
+    })
+    chart.update();
+    //console.log("oui : ",chart.labels.length);
+  }
 }
 
 
@@ -139,8 +151,6 @@ window.onload = function(){
     [7.96900000423193,44.489000004250556,126.10700000077486,272.877999994671,
     527.3610000091139,926.1829999973997,1463.7889999954496,2222.7849999966566,
     3144.293999992078,4356.391000002623]]);
-  removeData(oui);
-  console.log(oui.data.datasets[0].data.length);
 }
 
 
