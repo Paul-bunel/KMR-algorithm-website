@@ -1,7 +1,7 @@
-const validationButton = document.body.querySelector('#validation-button');
-const sequenceInput = document.body.querySelector('#sequence');
-const printSequence = document.body.querySelector('#print-sequence');
-const algoResults = document.body.querySelector('#algo-results');
+const validationButton = document.body.querySelector('.validation-button');
+const sequenceInput = document.body.querySelector('.sequence');
+const printSequence = document.body.querySelector('.print-sequence');
+const algoResults = document.body.querySelector('.algo-results');
 
 validationButton.onclick = applyKMR;
 

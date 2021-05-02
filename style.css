@@ -1,12 +1,17 @@
-#sequence {
+.sequence {
     width: 40vw;
 }
 
-#table-results {
+.table-results {
     border-collapse: collapse;
 }
 
-#table-results td, th {
+.table-results td, th {
     border: black solid 1px;
     padding: 5px 15px;
+}
+
+.chart {
+    width: 800px;
+    height: 600px;
 }

@@ -1,4 +1,4 @@
-const perfButton = document.querySelector('#perf-button');
+const perfButton = document.querySelector('.perf-button');
 // const algoResults = document.querySelector('#algo-results');
 // Map : {n -> seq}
 

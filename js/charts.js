@@ -1,4 +1,5 @@
-
+const removeButton = document.querySelector('.remove-button');
+const restoreButton = document.querySelector('.restore-button');
 
 var ChartData1 = {
   labels  : [
@@ -85,9 +86,16 @@ const datastorage = [[0.33100000000558794,0.913999998010695	,1.2670000025536865,
   527.3610000091139,926.1829999973997,1463.7889999954496,2222.7849999966566,
   3144.293999992078,4356.391000002623]];
 
+chartPerf = new Chart(document.querySelector('.line').getContext("2d") , {
+  type : "line",
+  data : ChartData1,
+  plugins: [plugin],
+  options: ChartLineOption,
+});
+  
 function ChangeData(chart, newData) {
   //chart.data.labels.push(label);
-  i = 0;
+  let i = 0;
   chart.data.datasets.forEach((dataset) => {
       dataset.data = newData[i];
       i++;
@@ -95,64 +103,53 @@ function ChangeData(chart, newData) {
   chart.update();
 }
 
-function removeData(chart) {
-
-  if(chart.data.datasets[0].data.length > 2)
-  {
-    chart.data.labels.pop();
+function removeData() {
+  if (chartPerf.data.datasets[0].data.length > 2) {
+    chartPerf.data.labels.pop();
     
-    chart.data.datasets.forEach((dataset) => {
+    chartPerf.data.datasets.forEach((dataset) => {
         dataset.data.pop();
     });
-    chart.update();
+    chartPerf.update();
   }
 }
 
 
-function restoreData(chart){
+function restoreData() {
+  let label = chartPerf.data.labels;
 
-  label = chart.data.labels;
-
-  if(chart.data.datasets[0].data.length < datastorage[0].length && chart.data.datasets[0].data.length > 0)
-  {
-
-    label.push(parseInt(label[label.length - 1],10) + 100);
+  console.log(chartPerf.data.datasets[0].data.length);
+  if (chartPerf.data.datasets[0].data.length < datastorage[0].length
+    && chartPerf.data.datasets[0].data.length > 0
+  ) {
+    label.push(parseInt(label[label.length - 1], 10) + 100);
 
     i = 0;
-    chart.data.datasets.forEach((dataset)=>{
-      dataset.data.push(datastorage[i][chart.data.datasets[i].data.length]);
+    chartPerf.data.datasets.forEach((dataset) => {
+      dataset.data.push(datastorage[i][chartPerf.data.datasets[i].data.length]);
       i++;
     })
-    chart.update();
+    chartPerf.update();
     //console.log("oui : ",chart.labels.length);
   }
 }
 
+removeButton.onclick = removeData;
+restoreButton.onclick = restoreData;
 
+function makeChart(){
+  window.myLine = chartPerf;
+  let dataChart = new Array();
+  for (let i = 0; i < datastorage.length; ++i) {
+    dataChart[i] = [...datastorage[i]];
+  }
+  ChangeData(chartPerf, dataChart);
 
-window.onload = function(){
-  //var line = document.getElementById('line').getContext("2d");
-  oui = new Chart(document.getElementById('line').getContext("2d") , {
-    type : "line",
-    data : ChartData1,
-    plugins: [plugin],
-    options: ChartLineOption,
-  });
-  window.myLine = oui;
   // var bar = document.getElementById('bar').getContext("2d");
-  window.myBar = new Chart(document.getElementById('bar').getContext("2d") , {
-    type : "bar",
-    data : ChartData2,
-  });
-
-  ChangeData(oui, [[0.33100000000558794,0.913999998010695	,1.2670000025536865,
-    1.7859999847132713,1.8820000055711716,0.5559999961405993,0.6310000026132911,
-    0.7310000015422702,0.7810000039171427,0.8789999992586672],
-    [7.96900000423193,44.489000004250556,126.10700000077486,272.877999994671,
-    527.3610000091139,926.1829999973997,1463.7889999954496,2222.7849999966566,
-    3144.293999992078,4356.391000002623]]);
+  // window.myBar = new Chart(document.querySelector('.bar').getContext("2d") , {
+  //   type : "bar",
+  //   data : ChartData2,
+  // });
 }
 
-
-
-
+window.onload = makeChart(); 

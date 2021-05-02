@@ -1,4 +1,4 @@
-const perfButton = document.querySelector('#perf-button');
+const perfButton = document.querySelector('.perf-button');
 // const algoResults = document.querySelector('#algo-results');
 // Map : {n -> seq}
 
@@ -28,7 +28,7 @@ function getSequences() {
 function recursiveAlgorithmCompute(algo, seqMap, perfMap, i, iMax) {
     if (typeof algo === "function") {
         i++;
-        const progression = document.querySelector('#progression');
+        const progression = document.querySelector('.progression');
         const timeElapsed = performance.now() - totalStart;
         progression.innerHTML += `Temps écoulé : ${timeElapsed}ms.`
             + ` Pourcentage du calcul effectué : ${100*timeElapsed/80000}%.<br>`;
@@ -70,7 +70,7 @@ function makeResultsTable(seqMap) {
 
     totalEnd = performance.now();
     console.log(`total time : ${totalEnd - totalStart}`);
-    const tabResults = document.querySelector('#table-results');
+    const tabResults = document.querySelector('.table-results');
     for (const length of seqMap.keys()) {
         tabResults.innerHTML += `<tr><td>${length}</td><td>${perfMapKMR.get(length)}</td>`
         + `<td>${perfMapNaive.get(length)}</td></tr>`;
@@ -127,9 +127,4 @@ function getPerformances(seqMap) {
     //     tabResults.innerHTML += `<tr><td>${length}</td><td>${perfMapKMR.get(length)}</td>`
     //         + `<td>${perfMapNaive.get(length)}</td></tr>`;
     // }
-}
-
-function drawGraphics(json) {
-    // JSON : {n: _, t: _}
-
 }

@@ -8,19 +8,36 @@
 
     <link href="style.css" rel="stylesheet">
 
-    <script src="perf.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js" ></script>
+    <script src="js/perf.js" defer></script>
     <!-- <script src="perfTestjs" defer></script> -->
-    <script src="kmr.js" defer></script>
-    <script src="naive.js" defer></script>
+    <script src="js/kmr.js" defer></script>
+    <script src="js/naive.js" defer></script>
+    <script src="js/charts.js" defer></script>
     <!-- <script src="executeKMR.js" defer></script> -->
 </head>
 <body>
-    <button id="perf-button">Calculer les performances</button>
-    <div id="algo-results">
-        <p id="progression">
+    <p>
+        Voici un graphique de comparaison des performances entre l'algorithme KMR
+        et l'algorithme naïf :
+    </p>
+
+    <div class="chart">
+        <canvas class="line" width="150" height="100"></canvas>
+        <button class="remove-button">Remove Data</button>
+        <button class="restore-button">Restore Data</button>
+    </div>
+
+    <div class="algo-results">
+        <p>
+            Vous pouvez calcler vos propres performances en appuyant sur le
+            bouton suivant :
+        </p>
+        <button class="perf-button">Calculer les performances</button>
+        <p class="progression">
             Temps écoulé : 0ms. Pourcentage du calcul effectué : 0%.<br>
         </p>
-        <table id="table-results">
+        <table class="table-results">
             <tr>
                 <th>Length</th>
                 <th>KMR Time</th>
