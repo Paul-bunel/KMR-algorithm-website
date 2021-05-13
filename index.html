@@ -9,7 +9,9 @@
     <link href="style.css" rel="stylesheet">
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js" ></script>
-    <script src="js/perf.js" defer></script>
+    <!-- <script src="js/worker.js"></script> -->
+    <script src="js/startWorker.js" defer></script>
+    <!-- <script src="js/perf.js" defer></script> -->
     <!-- <script src="perfTestjs" defer></script> -->
     <script src="js/kmr.js" defer></script>
     <script src="js/naive.js" defer></script>
@@ -17,33 +19,83 @@
     <!-- <script src="executeKMR.js" defer></script> -->
 </head>
 <body>
-    <p>
-        Voici un graphique de comparaison des performances entre l'algorithme KMR
-        et l'algorithme naïf :
-    </p>
-
-    <div class="chart">
-        <canvas class="line" width="150" height="100"></canvas>
-        <button class="remove-button">Remove Data</button>
-        <button class="restore-button">Restore Data</button>
-    </div>
-
-    <div class="algo-results">
-        <p>
-            Vous pouvez calcler vos propres performances en appuyant sur le
-            bouton suivant :
-        </p>
-        <button class="perf-button">Calculer les performances</button>
-        <p class="progression">
-            Temps écoulé : 0ms. Pourcentage du calcul effectué : 0%.<br>
-        </p>
-        <table class="table-results">
-            <tr>
-                <th>Length</th>
-                <th>KMR Time</th>
-                <th>Naive Time</th>
-            </tr>
-        </table>
+    <div class="kmr">
+        <div class="chart">
+            <p class="legend">
+                Voici un graphique de comparaison des performances entre l'algorithme KMR
+                et l'algorithme naïf :
+            </p>
+            <canvas class="line" width="150" height="100"></canvas>
+            <button class="remove-button">Remove Data</button>
+            <button class="restore-button">Restore Data</button>
+        </div>
+        
+        <div class="algo-results">
+            <p>
+                Vous pouvez calculer vos propres performances en appuyant sur le
+                bouton suivant (cela peut prendre plusieurs minutes) :
+            </p>
+            <button class="perf-button">Calculer les performances</button>
+            <progress class="progression" max=100 value=0></progress>
+            <table class="table-results">
+                <tr>
+                    <th>Length</th>
+                    <th>KMR Time</th>
+                    <th>Naive Time</th>
+                </tr>
+                <tr>
+                    <td>100</td>
+                    <td>0.331</td>
+                    <td>5.646</td>
+                </tr>
+                <tr>
+                    <td>200</td>
+                    <td>0.34</td>
+                    <td>36.088</td>
+                </tr>
+                <tr>
+                    <td>300</td>
+                    <td>0.453</td>
+                    <td>115.886</td>
+                </tr>
+                <tr>
+                    <td>400</td>
+                    <td>0.497</td>
+                    <td>272.298</td>
+                </tr>
+                <tr>
+                    <td>500</td>
+                    <td>0.544</td>
+                    <td>530.203</td>
+                </tr>
+                <tr>
+                    <td>600</td>
+                    <td>0.587</td>
+                    <td>911.535</td>
+                </tr>
+                <tr>
+                    <td>700</td>
+                    <td>0.614</td>
+                    <td>1452.441</td>
+                </tr>
+                <tr>
+                    <td>800</td>
+                    <td>0.744</td>
+                    <td>2168.57</td>
+                </tr>
+                <tr>
+                    <td>900</td>
+                    <td>0.762</td>
+                    <td>3053.598</td>
+                </tr>
+                <tr>
+                    <td>1000</td>
+                    <td>0.84</td>
+                    <td>4195.751</td>
+                </tr>
+            </table>
+            
+        </div>
     </div>
 </body>
 </html>

@@ -79,12 +79,32 @@ const plugin = {
   }
 };
 
-const datastorage = [[0.33100000000558794,0.913999998010695	,1.2670000025536865,
-  1.7859999847132713,1.8820000055711716,0.5559999961405993,0.6310000026132911,
-  0.7310000015422702,0.7810000039171427,0.8789999992586672],
-  [7.96900000423193,44.489000004250556,126.10700000077486,272.877999994671,
-  527.3610000091139,926.1829999973997,1463.7889999954496,2222.7849999966566,
-  3144.293999992078,4356.391000002623]];
+dataStorage = [
+  [
+    0.33100005239248276,
+    0.3399999812245369,
+    0.4530000500380993,
+    0.4970000125467777,
+    0.5440001375973225,
+    0.5870000459253788,
+    0.6139999255537987,
+    0.7440000772476196,
+    0.7620000280439854,
+    0.8399998769164085
+  ],
+  [
+    5.646000057458878,
+    36.08799995854497,
+    115.88599998503923,
+    272.2980000078678,
+    530.2030000835657,
+    911.5349999628961,
+    1452.4410001002252,
+    2168.569999933243,
+    3053.597999922931,
+    4195.750999916345
+  ]
+];
 
 chartPerf = new Chart(document.querySelector('.line').getContext("2d") , {
   type : "line",
@@ -95,7 +115,7 @@ chartPerf = new Chart(document.querySelector('.line').getContext("2d") , {
   
 function ChangeData(chart, newData) {
   //chart.data.labels.push(label);
-  let i = 0;
+  i = 0;
   chart.data.datasets.forEach((dataset) => {
       dataset.data = newData[i];
       i++;
@@ -119,14 +139,14 @@ function restoreData() {
   let label = chartPerf.data.labels;
 
   console.log(chartPerf.data.datasets[0].data.length);
-  if (chartPerf.data.datasets[0].data.length < datastorage[0].length
+  if (chartPerf.data.datasets[0].data.length < dataStorage[0].length
     && chartPerf.data.datasets[0].data.length > 0
   ) {
     label.push(parseInt(label[label.length - 1], 10) + 100);
 
     i = 0;
     chartPerf.data.datasets.forEach((dataset) => {
-      dataset.data.push(datastorage[i][chartPerf.data.datasets[i].data.length]);
+      dataset.data.push(dataStorage[i][chartPerf.data.datasets[i].data.length]);
       i++;
     })
     chartPerf.update();
@@ -140,8 +160,8 @@ restoreButton.onclick = restoreData;
 function makeChart(){
   window.myLine = chartPerf;
   let dataChart = new Array();
-  for (let i = 0; i < datastorage.length; ++i) {
-    dataChart[i] = [...datastorage[i]];
+  for (let i = 0; i < dataStorage.length; ++i) {
+    dataChart[i] = [...dataStorage[i]];
   }
   ChangeData(chartPerf, dataChart);
 
