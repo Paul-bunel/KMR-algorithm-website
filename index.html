@@ -1,101 +1,194 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Algorithme KMR logo</title>
-    <link href="favicon.ico" rel="icon">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Algorithme KMR</title>
+  <link href="favicon.ico" rel="icon">
 
-    <link href="style.css" rel="stylesheet">
+  <link href="style.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat&family=Quicksand&display=swap" rel="stylesheet">
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js" ></script>
-    <!-- <script src="js/worker.js"></script> -->
-    <script src="js/startWorker.js" defer></script>
-    <!-- <script src="js/perf.js" defer></script> -->
-    <!-- <script src="perfTestjs" defer></script> -->
-    <script src="js/kmr.js" defer></script>
-    <script src="js/naive.js" defer></script>
-    <script src="js/charts.js" defer></script>
-    <!-- <script src="executeKMR.js" defer></script> -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js" ></script>
+  <script src="js/style.js" defer></script>
+  <!-- <script src="js/worker.js"></script> -->
+  <script src="js/startWorker.js" defer></script>
+  <!-- <script src="js/perf.js" defer></script> -->
+  <!-- <script src="perfTestjs" defer></script> -->
+  <script src="js/kmr.js" defer></script>
+  <script src="js/alternativeKMR.js" defer></script>
+  <script src="js/naive.js" defer></script>
+  <script src="js/charts.js" defer></script>
+  <script src="js/executeKMR.js" defer></script>
 </head>
 <body>
-    <div class="kmr">
-        <div class="chart">
+  <header>
+    <h1>L'algorithme KMR</h1>
+  </header>
+
+  <div class="site">
+    <div class="navi navsticky">
+      <nav class="navi">
+        <div class="pre">
+          <a href="#presentation">1</a>
+          <span class="pop-up-text pop-up1">Présentation de KMR</span>
+        </div>
+
+        <div class="pre">
+          <a href="#implementation">2</a>
+          <span class="pop-up-text pop-up3">Testez KMR</span>
+        </div>
+
+        <div class="pre">
+          <a href="#perf">3</a>
+          <span class="pop-up-text pop-up2">Performances</span>
+        </div>      
+      </nav>
+    </div>
+    
+    <div class="content">
+      <article class="presentation" id="presentation">
+        <h2>L'algorithme KMR</h2>
+        <h4>Introduction</h4> <br>
+        L'algorithme KMR, porte le nom de ses concepteurs Karp, Miller et Rosenberg, 
+        c'est un algorithme de détection de répétition de motifs dans une structure de donnée 
+        (chaine de caractères, tableau, arbres). Ici notre algorithme fonctionne sur les chaines de 
+        caractères et renvoie le plus grand facteur répété. <br>
+         
+        <h4>Fonctionnement :</h4> <br>
+        L'algorithme se déroule de la manière suivante : Il va tout dabord chercher les motifs répétés
+        de taille 1, afin de récupérer l'alphabet de la chaine passé en paramètre. Chaque élément de cet 
+        alphabet va être mit dans une "classe". Nous aurons donc une classe pour chaque caractères.
+        L'algorithme va ensuite doublé la taille des motifs répétés à chercher, il va maintenant 
+        regarder si il y a des motifs répétés de taille 2. Et comme précédement les mettre dans des 
+        "classes", nous répétons cette opération jusqu'à ne plus trouver de motifs répété.
+        Mais ce n'est pas fini! Comme nous avons doublé à chaque fois la taille des motifs à chercher,
+        nous devons regarder entre la taille des plus grands motifs déjà trouvé et celle de ceux 
+        où nous avons rien trouvé. <br> 
+        <br>
+        petit exemple pour illustrer : Si nous prenons le mot "MONTONTON" et que nous appliquons 
+        l'algorithme : <br>
+        V = le tableau des classes. <br>
+        1 - V ={ {M} , {O} , {N} ,{T} } motifs de taille 1, <br>
+        2 - V ={ {ON} , {NT} , {TO} } motifs de taille 2, <br>
+        3 - V ={ {ONTO} , {NTON} } motifs de taille 4, <br>
+        4 - ERREUR pas de motifs de taille 8 répétés. <br>
+        <br>
+        A partir de cette instant nous allons chercher si il existe des motifs de répétés de 
+        taille entre 4 et 8. Et pour cela quoi de mieux que la recherche par dichotomie ! Le fameux 
+        "diviser pour régner" ! <br>
+        Donc comme nous savons qu'il existe des motifs répétés de taille 4, mais pas de taille 8, 
+        on prend donc le juste millieu soit 6. Nous cherchons si il en existe, si oui on cherchera 
+        au-dessus de 6, sinon en-dessous et ainsi de suite. <br>
+        Si nous continuons notre exemple, nous avons : <br>
+        5 - ERREUR pas de motifs de taille 6 répétés, <br>
+        6 - V = { {ONTON} } motifs de taille 5. <br>
+        <br>
+        C'est bon notre algorithme s'arrête. Nous avons trouvé le motif répété le plus grand : "ONTON".
+        C'est ainsi que fonctionne grossièrement un algorithme KMR.
+        <br>
+        <h4>Où est utilisé l'algo KMR ?</h4> <br>
+
+        Cet algorithme est utilisé dans le secteur de la bio-informatique, d'ADN.
+        
+        <br>
+        <h4>Parlons complexité !</h4>
+        <br>
+
+
+
+      </article>
+
+      <article class="implementation" id="implementation">
+        <h2>Testez-vous même l'algorihme !</h2>
+        <input type="text" class="sequence" placeholder="Entrez votre chaine de caractères ici">
+        <button class="validation-button">Chercher des motifs</button>
+        <p class="print-sequence"></p>
+        <div class="algo-results"></div>
+      </article>
+
+      <article class="perf" id="perf">
+        <h2>Performances de l'algorithme</h2>
+        <div class="kmr">
+          <div class="chart">
             <p class="legend">
-                Voici un graphique de comparaison des performances entre l'algorithme KMR
-                et l'algorithme naïf :
+              Voici un graphique de comparaison des performances entre l'algorithme KMR
+              et l'algorithme naïf :
             </p>
             <canvas class="line" width="150" height="100"></canvas>
-            <button class="remove-button">Remove Data</button>
-            <button class="restore-button">Restore Data</button>
-        </div>
-        
-        <div class="algo-results">
-            <p>
+              <button class="remove-button">Remove Data</button>
+              <button class="restore-button">Restore Data</button>
+            </div>
+            
+            <div class="perf-results">
+              <p>
                 Vous pouvez calculer vos propres performances en appuyant sur le
                 bouton suivant (cela peut prendre plusieurs minutes) :
-            </p>
-            <button class="perf-button">Calculer les performances</button>
-            <progress class="progression" max=100 value=0></progress>
-            <table class="table-results">
+              </p>
+              <button class="perf-button">Calculer les performances</button>
+              <progress class="progression" max=100 value=0></progress>
+              <table class="table-results">
                 <tr>
-                    <th>Length</th>
-                    <th>KMR Time</th>
-                    <th>Naive Time</th>
-                </tr>
-                <tr>
-                    <td>100</td>
-                    <td>0.331</td>
-                    <td>5.646</td>
-                </tr>
-                <tr>
-                    <td>200</td>
-                    <td>0.34</td>
-                    <td>36.088</td>
-                </tr>
-                <tr>
-                    <td>300</td>
-                    <td>0.453</td>
-                    <td>115.886</td>
-                </tr>
-                <tr>
-                    <td>400</td>
-                    <td>0.497</td>
-                    <td>272.298</td>
-                </tr>
-                <tr>
-                    <td>500</td>
-                    <td>0.544</td>
-                    <td>530.203</td>
-                </tr>
-                <tr>
-                    <td>600</td>
-                    <td>0.587</td>
-                    <td>911.535</td>
-                </tr>
-                <tr>
-                    <td>700</td>
-                    <td>0.614</td>
-                    <td>1452.441</td>
-                </tr>
-                <tr>
-                    <td>800</td>
-                    <td>0.744</td>
-                    <td>2168.57</td>
-                </tr>
-                <tr>
-                    <td>900</td>
-                    <td>0.762</td>
-                    <td>3053.598</td>
-                </tr>
-                <tr>
-                    <td>1000</td>
-                    <td>0.84</td>
-                    <td>4195.751</td>
-                </tr>
+                  <th>Length</th>
+                  <th>KMR Time</th>
+                  <th>Naive Time</th>
+              </tr>
+              <tr>
+                <td>100</td>
+                <td>0.331</td>
+                <td>5.646</td>
+              </tr>
+              <tr>
+                <td>200</td>
+                <td>0.34</td>
+                <td>36.088</td>
+              </tr>
+              <tr>
+                <td>300</td>
+                <td>0.453</td>
+                <td>115.886</td>
+              </tr>
+              <tr>
+                <td>400</td>
+                <td>0.497</td>
+                <td>272.298</td>
+              </tr>
+              <tr>
+                <td>500</td>
+                <td>0.544</td>
+                <td>530.203</td>
+              </tr>
+              <tr>
+                <td>600</td>
+                <td>0.587</td>
+                <td>911.535</td>
+              </tr>
+              <tr>
+                <td>700</td>
+                <td>0.614</td>
+                <td>1452.441</td>
+              </tr>
+              <tr>
+                <td>800</td>
+                <td>0.744</td>
+                <td>2168.57</td>
+              </tr>
+              <tr>
+                <td>900</td>
+                <td>0.762</td>
+                <td>3053.598</td>
+              </tr>
+              <tr>
+                <td>1000</td>
+                <td>0.84</td>
+                <td>4195.751</td>
+              </tr>
             </table>
-            
+          </div>
         </div>
+      </article>
     </div>
+  </div>
 </body>
 </html>

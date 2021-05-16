@@ -1,4 +1,4 @@
-class KMR {
+class alternativeKMR {
     constructor(sequence) {
         this.sequence = sequence;
         this.a = [];
