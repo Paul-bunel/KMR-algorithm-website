@@ -7,13 +7,17 @@ class KMR {
         this.e = 0;
         this.v_a = [];
 
-        this.init();
+        // Complexité en temps : O(n² log(n))
+        this.init(); // Boucle n fois
         if (this.e) {
             let i = 0;
-            do {
+            do { // Boucle log(n) fois dans le pire des cas
+                console.log(`i = ${i++}`);
                 this.b = this.a;
             } while (this.next_iter());
-            while (this.b > 1) {
+            console.log("switch");
+            while (this.b > 1) { // Boucle log(n) fois dans le pire des cas
+                console.log(`i = ${i++}`);
                 this.b >>= 1;
                 this.next_iter();
             }
@@ -50,7 +54,7 @@ class KMR {
         console.log(`Nouvelle iteration avec a = ${this.a}, b = ${this.b} et`,
                     `e = ${this.e}`);
 
-        for (let p = 0; p < this.n; ++p) {
+        for (let p = 0; p < this.n; ++p) { // O(n)
             if (this.v_a[p] != -1) {
                 let i = this.v_a[p];
                 if (!(P[i] instanceof Array)) {
@@ -60,8 +64,8 @@ class KMR {
             }
         }
 
-        for (let i = 0; i < this.e; ++i) {
-            while (P[i].length > 0) {
+        for (let i = 0; i < this.e; ++i) { // Boucle n fois dans le pire des cas
+            while (P[i].length > 0) { // Boucle n fois dans le pire des cas
                 let p = P[i].pop();
                 if ((p + this.b < this.n) && (this.v_a[p + this.b] != -1)) {
                     if (!(Q[this.v_a[p + this.b]] instanceof Array)) {
@@ -70,7 +74,7 @@ class KMR {
                     Q[this.v_a[p + this.b]].push(p);
                 }
             }
-            for (let j = 0; j < this.e; ++j) {
+            for (let j = 0; j < this.e; ++j) { // Boucle n fois dans le pire des cas
                 if ((Q[j] instanceof Array) && Q[j].length > 0) {
                     let x = Q[j][Q[j].length - 1];
                     if (x != -1) {
@@ -89,9 +93,10 @@ class KMR {
         }
 
         if (has_motif) {
+            console.log("Motif répété !");
             this.v_a.fill(-1);
             let e_tmp = -1;
-            for (let i = 0; i < this.e; ++i) {
+            for (let i = 0; i < this.e; ++i) { // Boucle n fois dans le pire des cas
                 while ((Q[i] instanceof Array) && Q[i].length > 0) {
                     let x = Q[i].pop();
                     if (x == -1) {
