@@ -5,7 +5,7 @@ class KMR {
         this.b = 1;
         this.n = sequence.length;
         this.e = 0;
-        this.v_a = [];
+        this.v_a = []; // Position des motifs
 
         // Complexité en temps : O(n² log(n))
         this.init(); // Boucle n fois
@@ -44,6 +44,8 @@ class KMR {
             }
         }
         this.e = (alphabet.size < this.n ? alphabet.size : 0);
+        console.log(`v_a = ${this.v_a}`);
+        console.log(`alphabet = ${Array.from(alphabet)}`);
     }
 
     next_iter() {

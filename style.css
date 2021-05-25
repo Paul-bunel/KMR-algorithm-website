@@ -160,12 +160,12 @@ footer {
     justify-content: center;
   }
 
-  .algoText {
+.algoText {
     margin-left: 10vh;
     width: 83%;
-  }
+}
 
-  .testAlgoResult {
+.testAlgoResult {
     margin-left: 10vh;
     width: 83%;
-  }
+}

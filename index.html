@@ -51,50 +51,56 @@
       <article class="presentation" id="presentation">
         <h2>L'algorithme KMR</h2>
         <div class="algoText">
-          <h4>Introduction</h4>
           <p>
             L'algorithme KMR, portant le nom de ses concepteurs Karp, Miller et Rosenberg, 
             est un algorithme de détection de répétition de motifs dans une structure de donnée 
-            (chaine de caractères, tableau, arbres). Ici notre algorithme fonctionne sur les chaines de 
+            (chaîne de caractères, tableau, arbres). Ici notre algorithme fonctionne sur les chaînes de 
             caractères et renvoie le plus grand facteur répété.
           </p>
-          <h4>Fonctionnement :</h4>
+          <h4>Fonctionnement</h4>
           <p>
-            L'algorithme se déroule de la manière suivante : Il va tout dabord chercher les motifs répétés
-            de taille 1, afin de récupérer l'alphabet de la chaine passé en paramètre. Chaque élément de cet 
-            alphabet va être mit dans une "classe". Nous aurons donc une classe pour chaque caractères.
-            L'algorithme va ensuite doublé la taille des motifs répétés à chercher, il va maintenant 
-            regarder si il y a des motifs répétés de taille 2. Et comme précédement les mettre dans des 
-            "classes", nous répétons cette opération jusqu'à ne plus trouver de motifs répété.
-            Mais ce n'est pas fini! Comme nous avons doublé à chaque fois la taille des motifs à chercher,
-            nous devons regarder entre la taille des plus grands motifs déjà trouvé et celle de ceux 
-            où nous avons rien trouvé.
+            L'algorithme se déroule de la manière suivante : il va tout d'abord chercher les motifs répétés
+            de taille 1, afin de récupérer l'alphabet de la chaîne passée en paramètre. Chaque élément de cet 
+            alphabet va être associé à un numéro de motif, et ce numéro sera ajouté dans un tableau représentant
+            la suite de motifs apparaissant dans la séquence initiale. <br>
+            L'algorithme va ensuite doubler la taille des motifs répétés à rechercher : il va maintenant 
+            regarder s'il y a des motifs répétés de taille 2. Et comme précédement, il les associera à des
+            numéros qu'il ajoutera dans l'ensemble des motifs. Cette opération est refaite jusqu'à ne plus
+            trouver de motif répété. <br>
+            Mais ce n'est pas encore fini ! Comme nous avons doublé à chaque fois la taille des motifs à
+            chercher, nous devons regarder entre la taille des plus grands motifs déjà trouvés et celle où
+            nous n'en avons pas trouvé.
           </p>
           <p>
-            petit exemple pour illustrer : Si nous prenons le mot "MONTONTON" et que nous appliquons 
+            Petit exemple pour illustrer : Si nous prenons le mot "MONTONTON" et que nous appliquons 
             l'algorithme : <br>
-            V = le tableau des classes. <br>
-            1 - V ={ {M} , {O} , {N} ,{T} } motifs de taille 1, <br>
-            2 - V ={ {ON} , {NT} , {TO} } motifs de taille 2, <br>
-            3 - V ={ {ONTO} , {NTON} } motifs de taille 4, <br>
-            4 - ERREUR pas de motifs de taille 8 répétés.
+            V = le tableau des numéros associés à chaque motif.
+            <ol>
+              <li>V = [ {M, 0}, {O, 1}, {N, 2}, {T, 3} ] motifs de taille 1,</li>
+              <li>V = [ {ON, 0} , {NT, 1} , {TO, 2} ] motifs de taille 2,</li>
+              <li>V = [ {ONTO, 0} , {NTON, 1} ] motifs de taille 4,</li>
+              <li>ERREUR pas de motifs de taille 8 répétés.</li>
+            </ol>
           </p>
           <p>
-            A partir de cette instant nous allons chercher s'il existe des motifs de répétés de 
-            taille entre 4 et 8. Et pour cela quoi de mieux que la recherche par dichotomie ! Le fameux 
+            À partir de cet instant nous allons chercher s'il existe des motifs répétés de 
+            taille entre 4 et 8. Et pour cela quoi de mieux que la recherche par dichotomie ? Le fameux 
             "diviser pour régner" ! <br>
             Donc comme nous savons qu'il existe des motifs répétés de taille 4, mais pas de taille 8, 
-            on prend donc le juste millieu soit 6. Nous cherchons si il en existe, si oui on cherchera 
-            au-dessus de 6, sinon en-dessous et ainsi de suite. <br>
-            Si nous continuons notre exemple, nous avons : <br>
-            5 - ERREUR pas de motifs de taille 6 répétés, <br>
-            6 - V = { {ONTON} } motifs de taille 5.
+            nous prenons donc le juste milieu soit 6. Nous cherchons s'il existe des motifs répétés
+            de taille 6 : si oui nous chercherons s'il en existe de taille supérieure à 6, sinon
+            inférieure et ainsi de suite. <br>
+            Si nous continuons notre exemple, nous avons : 
+            <ol start=5>
+              <li>ERREUR pas de motifs de taille 6 répétés,</li>
+              <li>V = [ {ONTON, 0} ] motif de taille 5.</li>
+            </ol>
           </p>
           <p>
             C'est bon notre algorithme s'arrête. Nous avons trouvé le motif répété le plus grand : "ONTON".
             C'est ainsi que fonctionne grossièrement un algorithme KMR.
           </p>
-          <h4>Où est utilisé l'algo KMR ?</h4>
+          <h4>Où est utilisé l'algorithme KMR ?</h4>
           <p>
             Cet algorithme est utilisé dans le secteur de la bio-informatique, pour l'analyse de
             répétitions dans des séquences d'acides aminés, par exemple au sein de structures protéiques.
@@ -112,7 +118,7 @@
       <article class="implementation" id="implementation">
         <h2>Testez-vous même l'algorihme !</h2>
         <div class="testAlgoResult">
-          <input type="text" class="sequence" placeholder="Entrez votre chaine de caractères ici">
+          <input type="text" class="sequence" placeholder="Entrez votre chaîne de caractères ici">
           <button class="validation-button">Chercher des motifs</button>
           <p class="print-sequence"></p>
           <div class="algo-results"></div>
